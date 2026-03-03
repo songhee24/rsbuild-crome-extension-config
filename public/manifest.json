@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Lazy Content Script Extension",
+  "version": "0.1.0",
+  "description": "Chrome extension with lazy-loaded content script modules (React + plain TS)",
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["bootstrap.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "web_accessible_resources": [
+    {
+      "matches": ["<all_urls>"],
+      "resources": [
+        "content.js",
+        "chunks/*.js",
+        "chunks/*.css"
+      ],
+      "use_dynamic_url": false
+    }
+  ],
+
+  "permissions": []
+}

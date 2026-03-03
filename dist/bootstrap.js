@@ -1,0 +1,1 @@
+(async()=>{try{await import(chrome.runtime.getURL("/content.js"))}catch(t){console.error("[Extension Bootstrap] Failed to load content module:",t)}})();

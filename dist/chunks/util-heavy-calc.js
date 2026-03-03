@@ -1,0 +1,1 @@
+export const __rspack_esm_id="918";export const __rspack_esm_ids=["918"];export const __webpack_modules__={845(t,e,_){_.d(e,{processData:()=>r});function r(t){if(0===t.length)return 0;let e=Math.min(...t),_=Math.max(...t)-e||1,r=t.map(t=>(t-e)/_),a=0,n=0;for(let t=0;t<r.length;t++){let e=Math.exp(-(.1*t));a+=r[t]*e,n+=e}return Math.round(a/n*1e4)/100}}};
