@@ -1,5 +1,5 @@
 {
-  "name": "chrome-ext-lazy-content",
+  "name": "rsbuild-chrome-extension-lazy-loading",
   "version": "0.1.0",
   "private": true,
   "type": "module",

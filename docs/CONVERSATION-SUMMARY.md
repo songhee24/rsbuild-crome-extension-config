@@ -1,4 +1,4 @@
-# Lazy Loading в Content Script Chrome Extension — полный конспект исследования
+# Rsbuild Chrome Extension Lazy Loading — полный конспект исследования
 
 ## Контекст
 

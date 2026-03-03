@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Lazy Content Script Extension",
+  "name": "Rsbuild Chrome Extension — Lazy Loading Config",
   "version": "0.1.0",
-  "description": "Chrome extension with lazy-loaded content script modules (React + plain TS)",
+  "description": "Reference config: lazy loading (code splitting) in Chrome Extension content script via Rsbuild + bootstrap pattern",
 
   "content_scripts": [
     {

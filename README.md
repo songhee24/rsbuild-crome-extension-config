@@ -1,7 +1,7 @@
-# Chrome Extension — Lazy Content Script (Rsbuild)
+# Rsbuild Chrome Extension — Lazy Loading Config
 
-Минимальный Chrome Extension с **ленивой загрузкой** в content script.
-Без popup, без background, без crxjs/wxt — чистый Rsbuild.
+Референсная конфигурация для **ленивой загрузки (code splitting)** в content script Chrome Extension.
+Rsbuild + bootstrap pattern. Без popup, без background, без crxjs/wxt.
 
 ## Архитектура
 

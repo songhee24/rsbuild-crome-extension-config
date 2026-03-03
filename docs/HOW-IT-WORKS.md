@@ -1,4 +1,4 @@
-# Как работает ленивая загрузка в Content Script Chrome Extension
+# Rsbuild Chrome Extension Lazy Loading — как всё работает
 
 ## Часть 1: Classic Script vs ES Module — фундаментальная разница
 
