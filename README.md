@@ -1,7 +1,7 @@
 # Rsbuild Chrome Extension — Lazy Loading Config
 
 Референсная конфигурация для **ленивой загрузки (code splitting)** в content script Chrome Extension.
-Rsbuild + bootstrap pattern. Без popup, без background, без crxjs/wxt.
+Rsbuild + bootstrap pattern, без crxjs/wxt.
 
 ## Архитектура
 
