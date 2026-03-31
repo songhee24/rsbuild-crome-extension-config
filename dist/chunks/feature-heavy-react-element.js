@@ -1,0 +1,1 @@
+export const __rspack_esm_id="789";export const __rspack_esm_ids=["789"];export const __webpack_modules__={8(e,_,t){t.r(_),t.d(_,{default:()=>s});var r=t(848);function s(){return(0,r.jsx)("div",{children:"Heavy React Element"})}}};

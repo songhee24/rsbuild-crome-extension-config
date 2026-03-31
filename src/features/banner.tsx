@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import styles from "./banner.module.css";
 
+const HeavyReactElement = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "feature-heavy-react-element" */
+      "./heavy-react-element"
+    ),
+);
+
 function Banner() {
   const [visible, setVisible] = useState(true);
+  const [renderHeavyReactElement, setRenderHeavyReactElement] = useState(false);
 
   if (!visible) return null;
 
@@ -12,6 +21,13 @@ function Banner() {
       <span className={styles.text}>
         CSS Modules banner — injected directly into the page DOM
       </span>
+
+      {renderHeavyReactElement && (
+        <Suspense fallback={<span>Loading...</span>}>
+          <HeavyReactElement />
+        </Suspense>
+      )}
+      <button onClick={() => setRenderHeavyReactElement(true)}>Render Heavy React Element</button>
       <button onClick={() => setVisible(false)} className={styles.closeBtn}>
         ✕
       </button>
