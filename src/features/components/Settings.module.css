@@ -1,0 +1,81 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.intervalGroup {
+  padding-left: 8px;
+}
+
+.intervalLabel {
+  color: #999;
+  font-size: 12px;
+}
+
+.intervalRange {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.resetBtn {
+  margin-top: 8px;
+  padding: 6px 16px;
+  background: #333;
+  color: #eee;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  align-self: flex-start;
+}
+
+/* ToggleRow */
+
+.toggleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggleLabel {
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.toggleDesc {
+  color: #777;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.switch {
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  background: #444;
+}
+
+.switchOn {
+  background: #4caf50;
+}
+
+.switchKnob {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: left 0.2s;
+}
+
+.switchKnobOn {
+  left: 21px;
+}

@@ -1,5 +1,7 @@
 import React, { Suspense, lazy, useState, Component, type ReactNode } from "react";
 import { createRoot, type Root } from "react-dom/client";
+import { registerShadowRoot } from "../utils/shadow-style";
+import styles from "./panel.module.css";
 
 const HeavyTable = lazy(
   () =>
@@ -31,22 +33,14 @@ class ErrorBoundary extends Component<EBProps, EBState> {
   render() {
     if (this.state.error) {
       return (
-        <div style={{ padding: 16, color: "#f44" }}>
-          <p style={{ margin: 0 }}>Failed to load component</p>
-          <pre style={{ fontSize: 11, color: "#999", marginTop: 4 }}>
+        <div className={styles.error}>
+          <p className={styles.errorMessage}>Failed to load component</p>
+          <pre className={styles.errorDetail}>
             {this.state.error.message}
           </pre>
           <button
             onClick={() => this.setState({ error: null })}
-            style={{
-              marginTop: 8,
-              padding: "4px 12px",
-              background: "#333",
-              color: "#eee",
-              border: "none",
-              borderRadius: 4,
-              cursor: "pointer",
-            }}
+            className={styles.retryBtn}
           >
             Retry
           </button>
@@ -65,101 +59,36 @@ function Panel() {
 
   if (!isOpen) {
     return (
-      <button
-        onClick={() => setIsOpen(true)}
-        style={{
-          position: "fixed",
-          bottom: 16,
-          right: 16,
-          zIndex: 99999,
-          padding: "8px 16px",
-          background: "#1a1a2e",
-          color: "#eee",
-          border: "none",
-          borderRadius: 8,
-          cursor: "pointer",
-          fontSize: 14,
-        }}
-      >
+      <button onClick={() => setIsOpen(true)} className={styles.openBtn}>
         Open Panel
       </button>
     );
   }
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: 16,
-        right: 16,
-        width: 400,
-        maxHeight: 500,
-        zIndex: 99999,
-        background: "#1a1a2e",
-        color: "#e0e0e0",
-        borderRadius: 12,
-        boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
-        fontFamily: "system-ui, sans-serif",
-        fontSize: 14,
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <div
-        style={{
-          padding: "12px 16px",
-          borderBottom: "1px solid #2a2a4a",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <span style={{ fontWeight: 600 }}>Extension Panel</span>
-        <button
-          onClick={() => setIsOpen(false)}
-          style={{
-            background: "none",
-            border: "none",
-            color: "#888",
-            cursor: "pointer",
-            fontSize: 18,
-          }}
-        >
+    <div className={styles.panel}>
+      <div className={styles.header}>
+        <span className={styles.headerTitle}>Extension Panel</span>
+        <button onClick={() => setIsOpen(false)} className={styles.closeBtn}>
           ✕
         </button>
       </div>
 
-      <div style={{ display: "flex", borderBottom: "1px solid #2a2a4a" }}>
+      <div className={styles.tabs}>
         {(["main", "table", "settings"] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            style={{
-              flex: 1,
-              padding: "8px 0",
-              background: tab === t ? "#2a2a4a" : "transparent",
-              color: tab === t ? "#fff" : "#888",
-              border: "none",
-              cursor: "pointer",
-              fontSize: 13,
-              textTransform: "capitalize",
-            }}
+            className={`${styles.tab} ${tab === t ? styles.tabActive : ""}`}
           >
             {t}
           </button>
         ))}
       </div>
 
-      <div style={{ padding: 16, overflowY: "auto", flex: 1 }}>
+      <div className={styles.content}>
         <ErrorBoundary>
-          <Suspense
-            fallback={
-              <div style={{ textAlign: "center", padding: 20, color: "#666" }}>
-                Loading...
-              </div>
-            }
-          >
+          <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
             {tab === "main" && <MainTab />}
             {tab === "table" && <HeavyTable />}
             {tab === "settings" && <Settings />}
@@ -173,8 +102,8 @@ function Panel() {
 function MainTab() {
   return (
     <div>
-      <h3 style={{ margin: "0 0 8px", fontSize: 16 }}>Dashboard</h3>
-      <p style={{ margin: 0, color: "#999", lineHeight: 1.5 }}>
+      <h3 className={styles.dashboardTitle}>Dashboard</h3>
+      <p className={styles.dashboardText}>
         This panel was lazy-loaded. The Table and Settings tabs will load their
         own chunks on demand via React.lazy().
       </p>
@@ -193,6 +122,8 @@ export function mountPanel(): void {
     container.id = CONTAINER_ID;
 
     const shadow = container.attachShadow({ mode: "open" });
+    registerShadowRoot(shadow);
+
     const mountPoint = document.createElement("div");
     shadow.appendChild(mountPoint);
 

@@ -3,34 +3,26 @@
   "name": "Rsbuild Chrome Extension — Lazy Loading Config",
   "version": "0.1.0",
   "description": "Reference config: lazy loading (code splitting) in Chrome Extension content script via Rsbuild + bootstrap pattern",
+
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "bootstrap.js"
-      ],
+      "matches": ["<all_urls>"],
+      "js": ["bootstrap.js"],
       "run_at": "document_idle"
     }
   ],
+
   "web_accessible_resources": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
+      "matches": ["<all_urls>"],
       "resources": [
         "content.js",
-        "chunks/component-heavy-table.js",
-        "chunks/component-settings.js",
-        "chunks/feature-panel.js",
-        "chunks/feature-scraper.js",
-        "chunks/util-heavy-calc.js",
-        "chunks/vendor-lib.js",
-        "chunks/vendor-react.js"
+        "chunks/*.js",
+        "chunks/*.css"
       ],
       "use_dynamic_url": false
     }
   ],
+
   "permissions": []
 }

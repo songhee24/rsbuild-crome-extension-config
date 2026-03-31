@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import styles from "./HeavyTable.module.css";
 
 interface Row {
   id: number;
@@ -29,44 +30,39 @@ export default function HeavyTable() {
 
   return (
     <div>
-      <div style={{ marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
-        <label style={{ color: "#999", fontSize: 12 }}>Rows:</label>
+      <div className={styles.controls}>
+        <label className={styles.label}>Rows:</label>
         <input
           type="range"
           min={10}
           max={200}
           value={count}
           onChange={(e) => setCount(Number(e.target.value))}
-          style={{ flex: 1 }}
+          className={styles.range}
         />
-        <span style={{ color: "#aaa", fontSize: 12, minWidth: 30 }}>{count}</span>
+        <span className={styles.count}>{count}</span>
       </div>
 
-      <div style={{ maxHeight: 300, overflowY: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+      <div className={styles.scrollWrapper}>
+        <table className={styles.table}>
           <thead>
-            <tr style={{ borderBottom: "1px solid #333" }}>
-              <th style={{ padding: "6px 8px", textAlign: "left", color: "#888" }}>ID</th>
-              <th style={{ padding: "6px 8px", textAlign: "left", color: "#888" }}>Name</th>
-              <th style={{ padding: "6px 8px", textAlign: "right", color: "#888" }}>Value</th>
-              <th style={{ padding: "6px 8px", textAlign: "center", color: "#888" }}>Status</th>
+            <tr className={styles.headerRow}>
+              <th className={styles.thLeft}>ID</th>
+              <th className={styles.thLeft}>Name</th>
+              <th className={styles.thRight}>Value</th>
+              <th className={styles.thCenter}>Status</th>
             </tr>
           </thead>
           <tbody>
             {data.map((row) => (
-              <tr key={row.id} style={{ borderBottom: "1px solid #222" }}>
-                <td style={{ padding: "4px 8px", color: "#666" }}>{row.id}</td>
-                <td style={{ padding: "4px 8px" }}>{row.name}</td>
-                <td style={{ padding: "4px 8px", textAlign: "right" }}>
-                  ${row.value.toFixed(2)}
-                </td>
-                <td style={{ padding: "4px 8px", textAlign: "center" }}>
+              <tr key={row.id} className={styles.bodyRow}>
+                <td className={styles.tdId}>{row.id}</td>
+                <td className={styles.td}>{row.name}</td>
+                <td className={styles.tdRight}>${row.value.toFixed(2)}</td>
+                <td className={styles.tdCenter}>
                   <span
+                    className={styles.badge}
                     style={{
-                      display: "inline-block",
-                      padding: "2px 8px",
-                      borderRadius: 10,
-                      fontSize: 11,
                       background: STATUS_COLORS[row.status] + "22",
                       color: STATUS_COLORS[row.status],
                     }}

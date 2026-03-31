@@ -1,0 +1,86 @@
+.controls {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.label {
+  color: #999;
+  font-size: 12px;
+}
+
+.range {
+  flex: 1;
+}
+
+.count {
+  color: #aaa;
+  font-size: 12px;
+  min-width: 30px;
+}
+
+.scrollWrapper {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.headerRow {
+  border-bottom: 1px solid #333;
+}
+
+.th {
+  padding: 6px 8px;
+  color: #888;
+}
+
+.thLeft {
+  composes: th;
+  text-align: left;
+}
+
+.thRight {
+  composes: th;
+  text-align: right;
+}
+
+.thCenter {
+  composes: th;
+  text-align: center;
+}
+
+.bodyRow {
+  border-bottom: 1px solid #222;
+}
+
+.td {
+  padding: 4px 8px;
+}
+
+.tdId {
+  composes: td;
+  color: #666;
+}
+
+.tdRight {
+  composes: td;
+  text-align: right;
+}
+
+.tdCenter {
+  composes: td;
+  text-align: center;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+}

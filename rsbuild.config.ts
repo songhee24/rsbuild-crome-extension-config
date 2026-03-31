@@ -12,14 +12,13 @@ export default defineConfig({
 
   output: {
     filenameHash: false,
+    injectStyles: true,
     filename: {
       js: "[name].js",
-      css: "[name].css",
     },
     distPath: {
       root: "dist",
       js: "",
-      css: "",
     },
     target: "web",
     copy: [{ from: "./public", to: "." }],
@@ -66,6 +65,19 @@ export default defineConfig({
   },
 
   tools: {
+    styleLoader: {
+      insert: function insert(styleElement: HTMLElement) {
+        styleElement.setAttribute("data-ext", "");
+        document.head.appendChild(styleElement);
+        if ((window as any).__extShadowRoots) {
+          (window as any).__extShadowRoots.forEach(function (
+            sr: ShadowRoot,
+          ) {
+            sr.appendChild(styleElement.cloneNode(true));
+          });
+        }
+      },
+    },
     rspack: (config) => {
       if (!config.output) config.output = {};
 

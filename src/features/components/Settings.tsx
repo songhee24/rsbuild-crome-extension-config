@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "./Settings.module.css";
 
 interface SettingsState {
   autoScrape: boolean;
@@ -22,7 +23,7 @@ export default function Settings() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div className={styles.container}>
       <ToggleRow
         label="Auto-scrape"
         description="Automatically scrape page data on load"
@@ -31,8 +32,8 @@ export default function Settings() {
       />
 
       {settings.autoScrape && (
-        <div style={{ paddingLeft: 8 }}>
-          <label style={{ color: "#999", fontSize: 12 }}>
+        <div className={styles.intervalGroup}>
+          <label className={styles.intervalLabel}>
             Interval: {settings.scrapeInterval}s
           </label>
           <input
@@ -41,7 +42,7 @@ export default function Settings() {
             max={120}
             value={settings.scrapeInterval}
             onChange={(e) => update("scrapeInterval", Number(e.target.value))}
-            style={{ width: "100%", marginTop: 4 }}
+            className={styles.intervalRange}
           />
         </div>
       )}
@@ -60,20 +61,7 @@ export default function Settings() {
         onChange={(v) => update("notifications", v)}
       />
 
-      <button
-        onClick={() => setSettings(DEFAULTS)}
-        style={{
-          marginTop: 8,
-          padding: "6px 16px",
-          background: "#333",
-          color: "#eee",
-          border: "none",
-          borderRadius: 6,
-          cursor: "pointer",
-          fontSize: 13,
-          alignSelf: "flex-start",
-        }}
-      >
+      <button onClick={() => setSettings(DEFAULTS)} className={styles.resetBtn}>
         Reset to defaults
       </button>
     </div>
@@ -92,42 +80,17 @@ function ToggleRow({
   onChange: (value: boolean) => void;
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
+    <div className={styles.toggleRow}>
       <div>
-        <div style={{ fontWeight: 500, fontSize: 13 }}>{label}</div>
-        <div style={{ color: "#777", fontSize: 11, marginTop: 2 }}>{description}</div>
+        <div className={styles.toggleLabel}>{label}</div>
+        <div className={styles.toggleDesc}>{description}</div>
       </div>
       <button
         onClick={() => onChange(!checked)}
-        style={{
-          width: 40,
-          height: 22,
-          borderRadius: 11,
-          border: "none",
-          background: checked ? "#4caf50" : "#444",
-          cursor: "pointer",
-          position: "relative",
-          transition: "background 0.2s",
-          flexShrink: 0,
-        }}
+        className={`${styles.switch} ${checked ? styles.switchOn : ""}`}
       >
         <div
-          style={{
-            width: 16,
-            height: 16,
-            borderRadius: "50%",
-            background: "#fff",
-            position: "absolute",
-            top: 3,
-            left: checked ? 21 : 3,
-            transition: "left 0.2s",
-          }}
+          className={`${styles.switchKnob} ${checked ? styles.switchKnobOn : ""}`}
         />
       </button>
     </div>
