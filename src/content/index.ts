@@ -36,6 +36,19 @@ async function loadScraper(): Promise<Record<string, string>[]> {
   }
 }
 
+async function loadBanner(): Promise<void> {
+  try {
+    const { mountBanner } = await import(
+      /* webpackChunkName: "feature-banner" */
+      "../features/banner"
+    );
+    mountBanner();
+    console.log("[ContentScript] Banner mounted (CSS Modules, direct DOM)");
+  } catch (err) {
+    console.error("[ContentScript] Failed to load banner:", err);
+  }
+}
+
 async function loadHeavyCalc(input: number[]): Promise<number> {
   try {
     const { processData } = await import(
@@ -54,11 +67,13 @@ function init(): void {
 
   if (shouldAutoMount()) {
     loadPanel();
+    loadBanner();
   }
 
   // Expose loaders to global scope for manual testing via DevTools console
   Object.assign(globalThis, {
     __extLoadPanel: loadPanel,
+    __extLoadBanner: loadBanner,
     __extLoadScraper: loadScraper,
     __extLoadHeavyCalc: loadHeavyCalc,
   });

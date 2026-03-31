@@ -20,6 +20,7 @@ export default defineConfig({
       root: "dist",
       js: "",
       css: "",
+      cssAsync: "chunks",
     },
     target: "web",
     copy: [{ from: "./public", to: "." }],
@@ -70,7 +71,6 @@ export default defineConfig({
       if (!config.output) config.output = {};
 
       config.output.chunkFilename = "chunks/[name].js";
-      config.output.cssChunkFilename = "chunks/[name].css";
 
       // publicPath: 'auto' — calculated from import.meta.url at runtime.
       // Since content.js is loaded as ESM via bootstrap.js's
