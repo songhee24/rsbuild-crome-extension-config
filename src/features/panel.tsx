@@ -1,7 +1,7 @@
 import React, { Suspense, lazy, useState, Component, type ReactNode } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { registerShadowRoot } from "../utils/shadow-style";
-import styles from "./panel.module.css";
+import { ShadowRootContext, useShadowStyles } from "../utils/shadow-style";
+import css from "./panel.css?raw";
 
 const HeavyTable = lazy(
   () =>
@@ -19,7 +19,6 @@ const Settings = lazy(
     ),
 );
 
-// ErrorBoundary for graceful degradation on chunk load failures
 interface EBProps { children: ReactNode; }
 interface EBState { error: Error | null; }
 
@@ -33,14 +32,14 @@ class ErrorBoundary extends Component<EBProps, EBState> {
   render() {
     if (this.state.error) {
       return (
-        <div className={styles.error}>
-          <p className={styles.errorMessage}>Failed to load component</p>
-          <pre className={styles.errorDetail}>
+        <div className="error">
+          <p className="errorMessage">Failed to load component</p>
+          <pre className="errorDetail">
             {this.state.error.message}
           </pre>
           <button
             onClick={() => this.setState({ error: null })}
-            className={styles.retryBtn}
+            className="retryBtn"
           >
             Retry
           </button>
@@ -54,41 +53,43 @@ class ErrorBoundary extends Component<EBProps, EBState> {
 type Tab = "main" | "table" | "settings";
 
 function Panel() {
+  useShadowStyles(css);
+
   const [tab, setTab] = useState<Tab>("main");
   const [isOpen, setIsOpen] = useState(true);
 
   if (!isOpen) {
     return (
-      <button onClick={() => setIsOpen(true)} className={styles.openBtn}>
+      <button onClick={() => setIsOpen(true)} className="openBtn">
         Open Panel
       </button>
     );
   }
 
   return (
-    <div className={styles.panel}>
-      <div className={styles.header}>
-        <span className={styles.headerTitle}>Extension Panel</span>
-        <button onClick={() => setIsOpen(false)} className={styles.closeBtn}>
+    <div className="panel">
+      <div className="header">
+        <span className="headerTitle">Extension Panel</span>
+        <button onClick={() => setIsOpen(false)} className="closeBtn">
           ✕
         </button>
       </div>
 
-      <div className={styles.tabs}>
+      <div className="tabs">
         {(["main", "table", "settings"] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`${styles.tab} ${tab === t ? styles.tabActive : ""}`}
+            className={`tab ${tab === t ? "tabActive" : ""}`}
           >
             {t}
           </button>
         ))}
       </div>
 
-      <div className={styles.content}>
+      <div className="content">
         <ErrorBoundary>
-          <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
+          <Suspense fallback={<div className="loading">Loading...</div>}>
             {tab === "main" && <MainTab />}
             {tab === "table" && <HeavyTable />}
             {tab === "settings" && <Settings />}
@@ -102,8 +103,8 @@ function Panel() {
 function MainTab() {
   return (
     <div>
-      <h3 className={styles.dashboardTitle}>Dashboard</h3>
-      <p className={styles.dashboardText}>
+      <h3 className="dashboardTitle">Dashboard</h3>
+      <p className="dashboardText">
         This panel was lazy-loaded. The Table and Settings tabs will load their
         own chunks on demand via React.lazy().
       </p>
@@ -113,6 +114,7 @@ function MainTab() {
 
 const CONTAINER_ID = "ext-lazy-panel-root";
 let root: Root | null = null;
+let shadowRef: ShadowRoot | null = null;
 
 export function mountPanel(): void {
   let container = document.getElementById(CONTAINER_ID);
@@ -121,21 +123,25 @@ export function mountPanel(): void {
     container = document.createElement("div");
     container.id = CONTAINER_ID;
 
-    const shadow = container.attachShadow({ mode: "open" });
-    registerShadowRoot(shadow);
+    shadowRef = container.attachShadow({ mode: "open" });
 
     const mountPoint = document.createElement("div");
-    shadow.appendChild(mountPoint);
+    shadowRef.appendChild(mountPoint);
 
     document.body.appendChild(container);
     root = createRoot(mountPoint);
   }
 
-  root?.render(<Panel />);
+  root?.render(
+    <ShadowRootContext.Provider value={shadowRef}>
+      <Panel />
+    </ShadowRootContext.Provider>,
+  );
 }
 
 export function unmountPanel(): void {
   root?.unmount();
   root = null;
+  shadowRef = null;
   document.getElementById(CONTAINER_ID)?.remove();
 }

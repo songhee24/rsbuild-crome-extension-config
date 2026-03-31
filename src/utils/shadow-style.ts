@@ -1,29 +1,39 @@
-declare global {
-  interface Window {
-    __extShadowRoots?: ShadowRoot[];
-  }
-}
+import { createContext, useContext, useEffect, useRef } from "react";
+
+export const ShadowRootContext = createContext<ShadowRoot | null>(null);
+
+const sheetCache = new Map<string, CSSStyleSheet>();
 
 /**
- * Register a shadow root so that all extension CSS (past and future)
- * is automatically injected into it.
+ * Adopt a CSS text into the nearest shadow root via `adoptedStyleSheets`.
  *
- * Call this right after `attachShadow()`, before rendering any content.
+ * Usage:
+ *   import css from './MyComponent.css?raw';
+ *   useShadowStyles(css);
+ *
+ * The CSSStyleSheet is created once per unique cssText string and reused
+ * across all components that import the same CSS file.
  */
-export function registerShadowRoot(shadowRoot: ShadowRoot): void {
-  window.__extShadowRoots = window.__extShadowRoots || [];
-  window.__extShadowRoots.push(shadowRoot);
+export function useShadowStyles(cssText: string): void {
+  const shadowRoot = useContext(ShadowRootContext);
+  const adopted = useRef(false);
 
-  document.head
-    .querySelectorAll<HTMLElement>("style[data-ext]")
-    .forEach((style) => {
-      shadowRoot.appendChild(style.cloneNode(true));
-    });
-}
+  useEffect(() => {
+    if (!shadowRoot || adopted.current) return;
+    adopted.current = true;
 
-export function unregisterShadowRoot(shadowRoot: ShadowRoot): void {
-  const roots = window.__extShadowRoots;
-  if (!roots) return;
-  const idx = roots.indexOf(shadowRoot);
-  if (idx >= 0) roots.splice(idx, 1);
+    let sheet = sheetCache.get(cssText);
+    if (!sheet) {
+      sheet = new CSSStyleSheet();
+      sheet.replaceSync(cssText);
+      sheetCache.set(cssText, sheet);
+    }
+
+    if (!shadowRoot.adoptedStyleSheets.includes(sheet)) {
+      shadowRoot.adoptedStyleSheets = [
+        ...shadowRoot.adoptedStyleSheets,
+        sheet,
+      ];
+    }
+  }, [shadowRoot, cssText]);
 }

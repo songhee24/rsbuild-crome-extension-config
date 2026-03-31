@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
-import styles from "./HeavyTable.module.css";
+import { useShadowStyles } from "../../utils/shadow-style";
+import css from "./HeavyTable.css?raw";
 
 interface Row {
   id: number;
@@ -25,43 +26,45 @@ const STATUS_COLORS: Record<Row["status"], string> = {
 };
 
 export default function HeavyTable() {
+  useShadowStyles(css);
+
   const [count, setCount] = useState(50);
   const data = useMemo(() => generateData(count), [count]);
 
   return (
     <div>
-      <div className={styles.controls}>
-        <label className={styles.label}>Rows:</label>
+      <div className="controls">
+        <label className="label">Rows:</label>
         <input
           type="range"
           min={10}
           max={200}
           value={count}
           onChange={(e) => setCount(Number(e.target.value))}
-          className={styles.range}
+          className="range"
         />
-        <span className={styles.count}>{count}</span>
+        <span className="count">{count}</span>
       </div>
 
-      <div className={styles.scrollWrapper}>
-        <table className={styles.table}>
+      <div className="scrollWrapper">
+        <table className="table">
           <thead>
-            <tr className={styles.headerRow}>
-              <th className={styles.thLeft}>ID</th>
-              <th className={styles.thLeft}>Name</th>
-              <th className={styles.thRight}>Value</th>
-              <th className={styles.thCenter}>Status</th>
+            <tr className="headerRow">
+              <th className="thLeft">ID</th>
+              <th className="thLeft">Name</th>
+              <th className="thRight">Value</th>
+              <th className="thCenter">Status</th>
             </tr>
           </thead>
           <tbody>
             {data.map((row) => (
-              <tr key={row.id} className={styles.bodyRow}>
-                <td className={styles.tdId}>{row.id}</td>
-                <td className={styles.td}>{row.name}</td>
-                <td className={styles.tdRight}>${row.value.toFixed(2)}</td>
-                <td className={styles.tdCenter}>
+              <tr key={row.id} className="bodyRow">
+                <td className="tdId">{row.id}</td>
+                <td className="td">{row.name}</td>
+                <td className="tdRight">${row.value.toFixed(2)}</td>
+                <td className="tdCenter">
                   <span
-                    className={styles.badge}
+                    className="badge"
                     style={{
                       background: STATUS_COLORS[row.status] + "22",
                       color: STATUS_COLORS[row.status],

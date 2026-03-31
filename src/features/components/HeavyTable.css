@@ -41,17 +41,20 @@
 }
 
 .thLeft {
-  composes: th;
+  padding: 6px 8px;
+  color: #888;
   text-align: left;
 }
 
 .thRight {
-  composes: th;
+  padding: 6px 8px;
+  color: #888;
   text-align: right;
 }
 
 .thCenter {
-  composes: th;
+  padding: 6px 8px;
+  color: #888;
   text-align: center;
 }
 
@@ -64,17 +67,17 @@
 }
 
 .tdId {
-  composes: td;
+  padding: 4px 8px;
   color: #666;
 }
 
 .tdRight {
-  composes: td;
+  padding: 4px 8px;
   text-align: right;
 }
 
 .tdCenter {
-  composes: td;
+  padding: 4px 8px;
   text-align: center;
 }
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import styles from "./Settings.module.css";
+import { useShadowStyles } from "../../utils/shadow-style";
+import css from "./Settings.css?raw";
 
 interface SettingsState {
   autoScrape: boolean;
@@ -16,6 +17,8 @@ const DEFAULTS: SettingsState = {
 };
 
 export default function Settings() {
+  useShadowStyles(css);
+
   const [settings, setSettings] = useState<SettingsState>(DEFAULTS);
 
   const update = <K extends keyof SettingsState>(key: K, value: SettingsState[K]) => {
@@ -23,7 +26,7 @@ export default function Settings() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className="container">
       <ToggleRow
         label="Auto-scrape"
         description="Automatically scrape page data on load"
@@ -32,8 +35,8 @@ export default function Settings() {
       />
 
       {settings.autoScrape && (
-        <div className={styles.intervalGroup}>
-          <label className={styles.intervalLabel}>
+        <div className="intervalGroup">
+          <label className="intervalLabel">
             Interval: {settings.scrapeInterval}s
           </label>
           <input
@@ -42,7 +45,7 @@ export default function Settings() {
             max={120}
             value={settings.scrapeInterval}
             onChange={(e) => update("scrapeInterval", Number(e.target.value))}
-            className={styles.intervalRange}
+            className="intervalRange"
           />
         </div>
       )}
@@ -61,7 +64,7 @@ export default function Settings() {
         onChange={(v) => update("notifications", v)}
       />
 
-      <button onClick={() => setSettings(DEFAULTS)} className={styles.resetBtn}>
+      <button onClick={() => setSettings(DEFAULTS)} className="resetBtn">
         Reset to defaults
       </button>
     </div>
@@ -80,18 +83,16 @@ function ToggleRow({
   onChange: (value: boolean) => void;
 }) {
   return (
-    <div className={styles.toggleRow}>
+    <div className="toggleRow">
       <div>
-        <div className={styles.toggleLabel}>{label}</div>
-        <div className={styles.toggleDesc}>{description}</div>
+        <div className="toggleLabel">{label}</div>
+        <div className="toggleDesc">{description}</div>
       </div>
       <button
         onClick={() => onChange(!checked)}
-        className={`${styles.switch} ${checked ? styles.switchOn : ""}`}
+        className={`switch ${checked ? "switchOn" : ""}`}
       >
-        <div
-          className={`${styles.switchKnob} ${checked ? styles.switchKnobOn : ""}`}
-        />
+        <div className={`switchKnob ${checked ? "switchKnobOn" : ""}`} />
       </button>
     </div>
   );
